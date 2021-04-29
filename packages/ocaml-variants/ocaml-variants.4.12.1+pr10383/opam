@@ -51,7 +51,7 @@ build: [
 ]
 install: [make "install"]
 url {
-  src: "https://github.com/dra27/ocaml/archive/update_scope_rec2.tar.gz"
+  src: "https://github.com/kit-ty-kate/ocaml/archive/update_scope_rec2.tar.gz"
 }
 post-messages: [
   "A failure in the middle of the build may be caused by build parallelism
