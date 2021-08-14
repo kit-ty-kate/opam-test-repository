@@ -16,7 +16,7 @@ conflict-class: "ocaml-core-compiler"
 flags: [ compiler avoid-version hidden-version ]
 setenv: CAML_LD_LIBRARY_PATH = "%{lib}%/stublibs"
 install: ["tar" "xvf" "4.12.0+flambda2.tar.xz" "-C" prefix]
-url {
+extra-source "4.12.0+flambda2.tar.xz" {
   src: "https://github.com/kit-ty-kate/opam-test-repository/releases/download/flambda2/4.12.0+flambda2.tar.xz"
 }
 conflicts: [
