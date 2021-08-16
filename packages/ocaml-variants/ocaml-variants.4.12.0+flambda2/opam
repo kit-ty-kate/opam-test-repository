@@ -4,21 +4,27 @@ maintainer: "platform@lists.ocaml.org"
 authors: ["Xavier Leroy" "Damien Doligez" "Alain Frisch" "Jacques Garrigue" "Didier Rémy" "Jérôme Vouillon"]
 homepage: "https://ocaml.org"
 bug-reports: "https://github.com/ocaml/opam-repository/issues"
-dev-repo: "git+https://github.com/ocaml/ocaml.git#4.12"
+dev-repo: "git://github.com/ocaml-flambda/flambda-backend.git"
 depends: [
   "ocaml" {= "4.12.0" & post}
   "base-unix" {post}
   "base-bigarray" {post}
   "base-threads" {post}
   "ocaml-beta" {opam-version < "2.1"}
+  "conf-autoconf" {build}
+  "ocamlfind-secondary"
 ]
 conflict-class: "ocaml-core-compiler"
-flags: [ compiler avoid-version hidden-version ]
+flags: [ compiler avoid-version ]
 setenv: CAML_LD_LIBRARY_PATH = "%{lib}%/stublibs"
-install: ["tar" "xvf" "4.12.0+flambda2.tar.xz" "-C" prefix]
-extra-source "4.12.0+flambda2.tar.xz" {
-  src: "https://github.com/kit-ty-kate/opam-test-repository/releases/download/flambda2/4.12.0+flambda2.tar.xz"
-}
+build: [
+  ["tar" "xvf" "special_dune.tar.gz"]
+  [make "-C" "dune-special_dune" "release"]
+  ["autoconf"]
+  ["./configure" "--prefix=%{prefix}%" "--enable-middle-end=flambda2" "--with-dune=%{build}%/dune-special_dune/dune.exe"]
+  [make]
+]
+install: [make "install"]
 conflicts: [
   "ocaml-option-32bit"
   "ocaml-option-afl"
@@ -33,3 +39,9 @@ conflicts: [
   "ocaml-option-nnp"
   "ocaml-option-nnpchecker"
 ]
+extra-source "special_dune.tar.gz" {
+  src: "https://github.com/ocaml-flambda/dune/archive/special_dune.tar.gz"
+}
+url {
+  src: "git://github.com/ocaml-flambda/flambda-backend.git"
+}
