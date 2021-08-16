@@ -41,6 +41,9 @@ conflicts: [
 extra-source "special_dune.tar.gz" {
   src: "https://github.com/ocaml-flambda/dune/archive/special_dune.tar.gz"
 }
+extra-source "ocaml-4.12.0.tar.gz" {
+  src: "https://github.com/ocaml/ocaml/archive/4.12.0.tar.gz"
+}
 url {
   src: "git://github.com/ocaml-flambda/flambda-backend.git"
 }
