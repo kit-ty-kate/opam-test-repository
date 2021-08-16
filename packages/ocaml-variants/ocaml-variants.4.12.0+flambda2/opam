@@ -10,16 +10,15 @@ depends: [
   "base-unix" {post}
   "base-bigarray" {post}
   "base-threads" {post}
-  "ocaml-beta" {opam-version < "2.1"}
   "conf-autoconf" {build}
-  "ocamlfind-secondary"
 ]
 conflict-class: "ocaml-core-compiler"
 flags: [ compiler avoid-version ]
 setenv: CAML_LD_LIBRARY_PATH = "%{lib}%/stublibs"
 build: [
+  ["tar" "xvf" "ocaml-4.12.0.tar.gz"]
   ["tar" "xvf" "special_dune.tar.gz"]
-  [make "-C" "dune-special_dune" "release"]
+  ["sh" "-c" "env \"PATH=ocaml-4.12.0/boot:$PATH\" \"%{make}%\" -C dune-special_dune release"]
   ["autoconf"]
   ["./configure" "--prefix=%{prefix}%" "--enable-middle-end=flambda2" "--with-dune=%{build}%/dune-special_dune/dune.exe"]
   [make]
