@@ -15,20 +15,13 @@ depends: [
 conflict-class: "ocaml-core-compiler"
 flags: [ compiler avoid-version ]
 setenv: CAML_LD_LIBRARY_PATH = "%{lib}%/stublibs"
-install: [
-  ["tar" "xvf" "ocaml-4.12.0.tar.gz"]
-  ["sh" "-c" "cd ocaml-4.12.0 && ./configure \"--prefix=%{prefix}%\" && make -j%{jobs}% && make install"]
-  ["tar" "xvf" "special_dune.tar.gz"]
-  [make "-C" "dune-special_dune" "release"]
-  ["cp" "dune-special_dune/dune.exe" "."]
-  ["rm" "ocaml-4.12.0.tar.gz"]
-  ["rm" "-rf" "ocaml-4.12.0"]
-  ["rm" "special_dune.tar.gz"]
-  ["rm" "-rf" "dune-special_dune"]
-  ["sh" "-c" "rm -rf \"%{prefix}%\"/*"]
+build: [
+  ["sh" "-c" "cd \"$TMPDIR\" && mv \"%{build}%/*.tar.gz\" . && tar xvf special_dune.tar.gz && tar xvf ocaml-4.12.0.tar.gz && cd ocaml-4.12.0 && ./configure \"--prefix=$TMPDIR/ocaml\" && make -j%{jobs}% && make install && PATH="$TMPDIR/ocaml:$PATH" %{make}% -C \"$TMPDIR/dune-special_dune\" release"]
   ["autoconf"]
-  ["./configure" "--prefix=%{prefix}%" "--enable-middle-end=flambda2" "--with-dune=%{build}%/dune.exe"]
-  [make]
+  ["sh" "-c" "./configure \"--prefix=%{prefix}%\" --enable-middle-end=flambda2 \"--with-dune=$TMPDIR/dune-special_dune/dune.exe\""]
+  [make "-j%{jobs}%"]
+]
+install: [
   [make "install"]
 ]
 conflicts: [
